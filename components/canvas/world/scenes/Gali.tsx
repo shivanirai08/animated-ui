@@ -7,7 +7,7 @@ import Building from "../Building";
 import Silhouette from "../../life/Silhouette";
 import Puddle from "../../life/Puddle";
 import PaperBoat from "../../life/PaperBoat";
-import { warmMaterials, silhouetteMaterial } from "../materials";
+import { warmMaterials, skinMaterial } from "../materials";
 
 /**
  * Scene Two — Gali. Childhood.
@@ -93,7 +93,7 @@ export default function Gali() {
           {/* the child, a dark stillness against the light */}
           <Silhouette position={[0.1, -0.95, 0.12]} seed={31} small energy={0.25} />
           {/* the hand resting where the rain can't reach */}
-          <mesh ref={handRef} position={[0.28, 0.07, 0.02]} material={silhouetteMaterial}>
+          <mesh ref={handRef} position={[0.28, 0.07, 0.02]} material={skinMaterial}>
             <circleGeometry args={[0.07, 8]} />
           </mesh>
         </group>

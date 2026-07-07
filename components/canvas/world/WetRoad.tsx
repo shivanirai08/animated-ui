@@ -23,9 +23,9 @@ export default function WetRoad() {
           depthScale={1.0}
           minDepthThreshold={0.3}
           maxDepthThreshold={1.4}
-          color="#161b24"
-          metalness={0.2}
-          roughness={0.6}
+          color="#2a3440"
+          metalness={0.1}
+          roughness={0.55}
         />
       </mesh>
 

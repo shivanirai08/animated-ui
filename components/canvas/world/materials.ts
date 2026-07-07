@@ -19,26 +19,26 @@ export const darkWindow = new THREE.MeshBasicMaterial({ color: "#0c121c" });
 
 /** old plaster walls, slightly different weathering each */
 export const wallMaterials = [
-  new THREE.MeshLambertMaterial({ color: "#5d5348" }),
-  new THREE.MeshLambertMaterial({ color: "#665a4a" }),
-  new THREE.MeshLambertMaterial({ color: "#4f4b45" }),
-  new THREE.MeshLambertMaterial({ color: "#6a5f55" }),
-  new THREE.MeshLambertMaterial({ color: "#57524e" }),
-  new THREE.MeshLambertMaterial({ color: "#4a4640" }),
+  new THREE.MeshLambertMaterial({ color: "#7a6f62" }),
+  new THREE.MeshLambertMaterial({ color: "#857a6c" }),
+  new THREE.MeshLambertMaterial({ color: "#6e6a62" }),
+  new THREE.MeshLambertMaterial({ color: "#8a7f72" }),
+  new THREE.MeshLambertMaterial({ color: "#756e66" }),
+  new THREE.MeshLambertMaterial({ color: "#686460" }),
 ];
 
 /** painted houses that survived many monsoons */
 export const paintedMaterials = [
-  new THREE.MeshLambertMaterial({ color: "#4e5a52" }), // faded green
-  new THREE.MeshLambertMaterial({ color: "#5e5064" }), // washed violet
-  new THREE.MeshLambertMaterial({ color: "#615549" }), // ochre
-  new THREE.MeshLambertMaterial({ color: "#465361" }), // indigo-grey
+  new THREE.MeshLambertMaterial({ color: "#5e6e64" }),
+  new THREE.MeshLambertMaterial({ color: "#6e6078" }),
+  new THREE.MeshLambertMaterial({ color: "#77695d" }),
+  new THREE.MeshLambertMaterial({ color: "#5a6878" }),
 ];
 
-export const roofMaterial = new THREE.MeshLambertMaterial({ color: "#2e2a26" });
-export const concreteDark = new THREE.MeshLambertMaterial({ color: "#3a3d42" });
-export const woodDark = new THREE.MeshLambertMaterial({ color: "#3d2f24" });
-export const metalDark = new THREE.MeshLambertMaterial({ color: "#2b2e33" });
-export const silhouetteMaterial = new THREE.MeshBasicMaterial({ color: "#120e0a" });
-export const foliageMaterial = new THREE.MeshLambertMaterial({ color: "#2a3b2a" });
-export const trunkMaterial = new THREE.MeshLambertMaterial({ color: "#332a22" });
+export const roofMaterial = new THREE.MeshLambertMaterial({ color: "#4a4540" });
+export const concreteDark = new THREE.MeshLambertMaterial({ color: "#525860" });
+export const woodDark = new THREE.MeshLambertMaterial({ color: "#5a4838" });
+export const metalDark = new THREE.MeshLambertMaterial({ color: "#4a5058" });
+export const skinMaterial = new THREE.MeshLambertMaterial({ color: "#a0715a" });
+export const foliageMaterial = new THREE.MeshLambertMaterial({ color: "#3d5238" });
+export const trunkMaterial = new THREE.MeshLambertMaterial({ color: "#4a3c30" });

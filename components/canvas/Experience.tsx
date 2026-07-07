@@ -19,22 +19,30 @@ export default function Experience() {
       gl={{
         antialias: true,
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 0.0, // the intro raises this as the world opens its eyes
+        toneMappingExposure: 0.0,
         powerPreference: "high-performance",
       }}
       camera={{ fov: 55, near: 0.1, far: 220, position: [0, 3.4, 14] }}
       shadows={false}
     >
-      <color attach="background" args={["#0a0f1a"]} />
-      <fogExp2 attach="fog" args={["#101a2b", 0.05]} />
+      <color attach="background" args={["#6a7d94"]} />
+      <fogExp2 attach="fog" args={["#8a9bb0", 0.014]} />
 
       <CameraRig />
       <AtmosphereController />
       <Lightning />
 
-      {/* base light: cold overcast dusk */}
-      <hemisphereLight args={["#364963", "#161d29", 1.0]} />
-      <directionalLight position={[18, 40, 20]} intensity={0.4} color="#5a6f8f" />
+      {/* monsoon evening ~5pm: soft overcast sky + warm low sun */}
+      <hemisphereLight args={["#b8c8dc", "#5a5e66", 1.5]} />
+      <directionalLight
+        position={[-28, 32, 36]}
+        intensity={1.15}
+        color="#ffd8a8"
+      />
+      {/* cool fill from the cloud layer above */}
+      <directionalLight position={[12, 48, -10]} intensity={0.35} color="#c8d4e4" />
+      {/* street-level bounce so people and buildings read clearly */}
+      <pointLight position={[0, 4, -80]} intensity={0.6} color="#d4c4b0" distance={120} decay={1.5} />
 
       <Sky />
       <Rain />

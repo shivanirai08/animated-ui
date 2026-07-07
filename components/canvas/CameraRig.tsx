@@ -71,8 +71,8 @@ export default function CameraRig() {
     _target.y += -driftedMouse.current.y * 0.6;
     camera.lookAt(_target);
 
-    // dusk deepens as the journey continues
-    atmo.darkness = t;
+    // evening gently deepens — never full night, stays around 5–6pm
+    atmo.darkness = t * 0.35;
   });
 
   return null;
