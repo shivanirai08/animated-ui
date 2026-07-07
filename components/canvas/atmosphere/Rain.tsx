@@ -6,36 +6,39 @@ import * as THREE from "three";
 import { atmo } from "@/lib/atmosphere";
 
 /**
- * Rain in world space.
+ * Rain in a camera-relative volume.
  *
- * Each drop has a fixed X/Z on the street. Only Y changes over time.
- * The rain never follows the camera — it falls through the world the
- * visitor moves through, the way real rain does.
+ * Drops fall straight down (world Y only) with no wind drift or Z motion,
+ * so scrolling through the street never makes rain appear to surge
+ * forward or backward. The volume follows the camera on X/Z.
  */
 
 const COUNT = 3200;
-const RAIN_TOP = 24;
-const WORLD = { x: 36, zMin: -270, zMax: 20 };
+const RAIN_HEIGHT = 24;
+const SPREAD = { x: 34, z: 18 };
 
 const vertex = /* glsl */ `
   uniform float uTime;
-  attribute vec3 aWorld;   // fixed world x, y-offset, z
+  uniform vec3 uCameraPos;
+  attribute vec3 aWorld;   // offset from camera: x, phase, z
   attribute float aSpeed;
   attribute float aAlpha;
   attribute float aLen;
   varying float vAlpha;
 
   void main() {
-    // fall in world space — no camera coupling on xz
-    float y = mod(aWorld.y - uTime * aSpeed, ${RAIN_TOP}.0);
-    vec3 world = vec3(aWorld.x, y, aWorld.z);
+    // steady top-to-bottom fall — no horizontal drift
+    float y = mod(aWorld.y - uTime * aSpeed, ${RAIN_HEIGHT}.0);
 
-    // gentle wind drift (world-space, not screen-space)
-    world.x += sin(uTime * 0.7 + aWorld.z * 0.04) * 0.08;
+    vec3 world = vec3(
+      uCameraPos.x + aWorld.x,
+      y,
+      uCameraPos.z + aWorld.z
+    );
 
-    // streak direction: mostly down, slightly angled by wind
-    vec3 down = normalize(vec3(0.06, -1.0, 0.0));
-    vec3 right = normalize(cross(vec3(0.0, 1.0, 0.0), down));
+    // pure vertical streaks
+    vec3 down = vec3(0.0, -1.0, 0.0);
+    vec3 right = vec3(1.0, 0.0, 0.0);
 
     vec3 vert = position;
     vert.y *= aLen;
@@ -43,6 +46,7 @@ const vertex = /* glsl */ `
     vec3 finalPos = world + right * vert.x + down * vert.y;
 
     gl_Position = projectionMatrix * viewMatrix * vec4(finalPos, 1.0);
+    vAlpha = aAlpha;
   }
 `;
 
@@ -58,6 +62,7 @@ const fragment = /* glsl */ `
 
 export default function Rain() {
   const matRef = useRef<THREE.ShaderMaterial>(null);
+  const cameraPos = useMemo(() => ({ value: new THREE.Vector3() }), []);
 
   const { geometry, uniforms } = useMemo(() => {
     const base = new THREE.PlaneGeometry(0.012, 0.65);
@@ -72,11 +77,10 @@ export default function Rain() {
     const lens = new Float32Array(COUNT);
 
     for (let i = 0; i < COUNT; i++) {
-      worlds[i * 3] = (Math.random() - 0.5) * WORLD.x;
-      worlds[i * 3 + 1] = Math.random() * RAIN_TOP;
-      worlds[i * 3 + 2] =
-        WORLD.zMin + Math.random() * (WORLD.zMax - WORLD.zMin);
-      speeds[i] = 10 + Math.random() * 8;
+      worlds[i * 3] = (Math.random() - 0.5) * SPREAD.x;
+      worlds[i * 3 + 1] = Math.random() * RAIN_HEIGHT;
+      worlds[i * 3 + 2] = (Math.random() - 0.5) * SPREAD.z;
+      speeds[i] = 11 + Math.random() * 7;
       alphas[i] = 0.4 + Math.random() * 0.6;
       lens[i] = 0.5 + Math.random() * 0.55;
     }
@@ -92,13 +96,15 @@ export default function Rain() {
       uniforms: {
         uTime: { value: 0 },
         uFlash: { value: 0 },
+        uCameraPos: cameraPos,
       },
     };
-  }, []);
+  }, [cameraPos]);
 
   useFrame((state) => {
     uniforms.uTime.value = state.clock.elapsedTime;
     uniforms.uFlash.value = atmo.flash;
+    cameraPos.value.copy(state.camera.position);
   });
 
   return (

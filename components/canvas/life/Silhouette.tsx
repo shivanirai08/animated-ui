@@ -24,17 +24,25 @@ interface SilhouetteProps {
 }
 
 const SKIN = ["#c68642", "#8d5524", "#a0715a", "#bc8f68", "#6b4423", "#d4a574"];
-const SHIRTS = ["#4a5568", "#5c4033", "#2d4a3e", "#6b3a3a", "#3d4f6f", "#7a6348", "#4f5d73"];
+const SHIRTS = ["#3d5a80", "#c1121c", "#2d6a4f", "#4a5568", "#6b3a3a", "#7a6348", "#5c4d7a"];
 const PANTS = ["#2c2c34", "#3a3a42", "#4a4038", "#353842", "#2e3338"];
+const SARIS = ["#c1121c", "#7b2cbf", "#ff6b35", "#2d6a4f", "#ffd166"];
 
 function usePersonLook(seed: number) {
   return useMemo(() => {
     const rnd = seeded(seed);
+    const sari = rnd() < 0.38;
     return {
       skin: new THREE.MeshLambertMaterial({ color: SKIN[Math.floor(rnd() * SKIN.length)] }),
-      shirt: new THREE.MeshLambertMaterial({ color: SHIRTS[Math.floor(rnd() * SHIRTS.length)] }),
+      shirt: new THREE.MeshLambertMaterial({
+        color: sari
+          ? SARIS[Math.floor(rnd() * SARIS.length)]
+          : SHIRTS[Math.floor(rnd() * SHIRTS.length)],
+      }),
       pants: new THREE.MeshLambertMaterial({ color: PANTS[Math.floor(rnd() * PANTS.length)] }),
       hair: new THREE.MeshLambertMaterial({ color: rnd() < 0.7 ? "#1a1410" : "#3d2a1a" }),
+      eye: new THREE.MeshBasicMaterial({ color: "#0a0a0a" }),
+      sari,
     };
   }, [seed]);
 }
@@ -108,6 +116,11 @@ export default function Silhouette({
         <mesh position={[0, 1.02 + seatY, 0]} material={mats.shirt}>
           <capsuleGeometry args={[0.14, 0.42, 4, 8]} />
         </mesh>
+        {mats.sari && (
+          <mesh position={[0.04, 0.78 + seatY, 0.02]} material={mats.shirt}>
+            <boxGeometry args={[0.22, 0.55, 0.08]} />
+          </mesh>
+        )}
 
         {/* ── arms ── */}
         <mesh position={[-0.22, 1.08 + seatY, 0.02]} rotation-z={0.25} material={mats.shirt}>
@@ -134,6 +147,13 @@ export default function Silhouette({
         {/* hair cap */}
         <mesh position={[0, 1.58 + seatY, -0.01]} material={mats.hair}>
           <sphereGeometry args={[0.105, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
+        </mesh>
+        {/* dot eyes — readable at a glance through windows and on the street */}
+        <mesh position={[-0.034, 1.535 + seatY, 0.098]} material={mats.eye}>
+          <sphereGeometry args={[0.013, 4, 4]} />
+        </mesh>
+        <mesh position={[0.034, 1.535 + seatY, 0.098]} material={mats.eye}>
+          <sphereGeometry args={[0.013, 4, 4]} />
         </mesh>
 
         {umbrella && (
