@@ -58,7 +58,7 @@ export const gazePath = new THREE.CatmullRomCurve3(
     v(0.0, 2.2, -6), //   the town ahead, wires against the sky
     v(-2.0, 2.0, -16), //  first warm windows
     v(-5.9, 1.9, -21), //  Ghar — the family window on the left
-    v(-5.2, 2.0, -26), //  holding the window as we pass
+    v(-1.5, 1.8, -40), //  releasing the window, back toward the street
     v(1.5, 1.2, -54), //   down at the gali, the puddles
     v(3.2, 1.4, -66), //   the paper boat drifting, window child beyond
     v(2.0, 1.6, -84), //   the lane opening out
@@ -96,8 +96,8 @@ export const captions: Caption[] = [
     text: "The rain is the same. The people are not.",
   },
   {
-    enter: 0.115,
-    exit: 0.215,
+    enter: 0.095,
+    exit: 0.19,
     hindi: "घर",
     text: "For this family, rain means being together.",
   },
